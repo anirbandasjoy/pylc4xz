@@ -1,0 +1,57 @@
+version: '3.8'
+
+# Alternative Docker Compose configuration
+# Use this if port 5432 is already in use on your system
+# This configuration uses port 5433 for PostgreSQL
+#
+# Usage: docker-compose -f docker-compose-alt-port.yml up -d
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fastapi_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fastapi_user
+      POSTGRES_PASSWORD: fastapi_password
+      POSTGRES_DB: fastapi_db
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "5433:5432"  # Maps external port 5433 to internal port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fastapi_user -d fastapi_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fastapi_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: fastapi_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - fastapi_network
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  fastapi_network:
+    driver: bridge
