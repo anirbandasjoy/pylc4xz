@@ -1,4 +1,4 @@
-# Product API - FastAPI CRUD Application
+# Product API - FastAPI
 
 A well-structured, modular FastAPI application demonstrating best practices for building RESTful APIs with product CRUD operations.
 
@@ -45,12 +45,14 @@ fastApi/
 ## Key Features
 
 ### 1. Layered Architecture
+
 - **Routers**: Handle HTTP requests/responses
 - **Services**: Contain business logic
 - **Schemas**: Pydantic models for validation
 - **Core**: Shared functionality (exceptions, responses, dependencies)
 
 ### 2. Custom Exceptions
+
 - `BaseAPIException`: Base exception for all API errors
 - `NotFoundException`: 404 errors
 - `BadRequestException`: 400 errors
@@ -58,13 +60,16 @@ fastApi/
 - And more...
 
 ### 3. Response Handlers
+
 - `success_response()`: Standard success response
 - `created_response()`: 201 Created response
 - `paginated_response()`: Paginated list response
 - `no_content_response()`: 204 No Content response
 
 ### 4. Base Service Pattern
+
 Reusable base service class with common CRUD operations:
+
 - `get_all()`: Get all entities with filtering
 - `get_by_id()`: Get entity by ID
 - `create()`: Create new entity
@@ -75,16 +80,20 @@ Reusable base service class with common CRUD operations:
 - `count()`: Get total count
 
 ### 5. Dependency Injection
+
 Type aliases for clean dependency injection:
+
 - `PaginationDep`: Pagination parameters
 - `SearchQueryDep`: Search query parameter
 - `ProductIdDep`: Product ID parameter
 
 ### 6. Middleware
+
 - **RequestLoggingMiddleware**: Logs all requests with timing and request IDs
 - **ErrorHandlerMiddleware**: Centralized error handling
 
 ### 7. Utilities & Decorators
+
 - `@catch_exceptions`: Catch and handle exceptions
 - `@log_execution_time`: Log function execution time
 - `@validate_required_fields`: Validate required fields
@@ -93,6 +102,7 @@ Type aliases for clean dependency injection:
 ## API Endpoints
 
 ### Products
+
 - `GET /api/v1/products` - Get all products (with pagination & category filter)
 - `GET /api/v1/products/search` - Search products
 - `GET /api/v1/products/category/{category}` - Get products by category
@@ -104,6 +114,7 @@ Type aliases for clean dependency injection:
 - `DELETE /api/v1/products/{id}` - Delete product
 
 ### Root
+
 - `GET /` - Root endpoint with API info
 - `GET /health` - Health check endpoint
 
@@ -111,11 +122,13 @@ Type aliases for clean dependency injection:
 
 1. Clone the repository
 2. Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 3. Configure environment variables (optional):
+
 ```bash
 cp .env.example .env
 ```
@@ -127,6 +140,7 @@ uvicorn main:app --reload
 ```
 
 The API will be available at:
+
 - API: http://localhost:8000
 - Interactive docs (Swagger): http://localhost:8000/docs
 - Alternative docs (ReDoc): http://localhost:8000/redoc
@@ -134,6 +148,7 @@ The API will be available at:
 ## Demo Data
 
 The application comes with 8 pre-loaded products:
+
 1. Laptop - $1299.99 (Electronics)
 2. Wireless Mouse - $29.99 (Electronics)
 3. Mechanical Keyboard - $89.99 (Electronics)
@@ -159,6 +174,7 @@ The application comes with 8 pre-loaded products:
 ## Example Requests
 
 ### Create a Product
+
 ```bash
 curl -X POST "http://localhost:8000/api/v1/products" \
   -H "Content-Type: application/json" \
@@ -173,16 +189,19 @@ curl -X POST "http://localhost:8000/api/v1/products" \
 ```
 
 ### Get All Products (Paginated)
+
 ```bash
 curl "http://localhost:8000/api/v1/products?skip=0&limit=10"
 ```
 
 ### Search Products
+
 ```bash
 curl "http://localhost:8000/api/v1/products/search?query=laptop"
 ```
 
 ### Update Product
+
 ```bash
 curl -X PATCH "http://localhost:8000/api/v1/products/1" \
   -H "Content-Type: application/json" \
@@ -193,6 +212,7 @@ curl -X PATCH "http://localhost:8000/api/v1/products/1" \
 ```
 
 ### Delete Product
+
 ```bash
 curl -X DELETE "http://localhost:8000/api/v1/products/1"
 ```
